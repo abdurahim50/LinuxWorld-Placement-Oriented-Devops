@@ -313,6 +313,72 @@ application?
 - targetCPUUtilizationPercentage = 50
 ___________________________________________________________________________________________________________________________________________________________________
 
+# Solution
+- Horizontal Pod Autoscaling in Kubernetes automatically adjusts the number of Pods in a workload (like a Deployment or StatefulSet) based on demand. When the load increases, more Pods are added, and when the load decreases, the number of Pods is reduced if it exceeds the minimum. This differs from vertical scaling, where more resources are added to existing Pods.
+
+- The HorizontalPodAutoscaler works as a Kubernetes API resource and a controller, adjusting the Pod count based on metrics like CPU or memory usage. However, it doesn’t apply to non-scalable objects like DaemonSets.  [Horizontal Pod Autoscaling - Kubernetes Documentation](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
+  
+##### To configure Horizontal Pod Autoscaling (HPA) for a Kubernetes deployment based on CPU utilization as requested,
+1. -- create a deployment for the web application
+###### nginx-deployment.yaml
+```
+# nginx-deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:latest
+          resources:
+            requests:
+              cpu: 100m  # Request 100m CPU
+            limits:
+              cpu: 500m  # Limit to 500m CPU
+          ports:
+            - containerPort: 80
+```
+
+2. -- Apply the deployment configuration to your Kubernetes cluster.
+   
+```
+kubectl apply -f nginx-deployment.yaml
+```
+3.  Next create an HPA for the nginx-deployment to automatically scale based on CPU utilization. The HPA will scale the number of pods between 1 and 10 based on a target CPU utilization of 50%.
+
+###### nginx-hpa.yaml
+
+```
+# nginx-hpa
+apiVersion: autoscaling/v1
+kind: HorizontalPodAutoscaler
+metadata:
+  name: nginx-hpa
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: nginx-deployment
+  minReplicas: 1
+  maxReplicas: 10
+  targetCPUUtilizationPercentage: 50
+```
+4. Apply the HPA configuration to your Kubernetes cluster.
+
+```
+kubectl get hpa
+```
+
 
 
 ___________________________________________________________________________________________________________________________________________________________________
