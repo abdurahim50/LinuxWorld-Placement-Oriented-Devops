@@ -289,6 +289,9 @@ spec:
           persistentVolumeClaim:
             claimName: mysql-pvc
 ```
+### Proof of concept: 
+![image](https://github.com/user-attachments/assets/2d4d4d1a-9ebb-4bc9-9c80-e1e5376883be)
+
 
 
 
