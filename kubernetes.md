@@ -5,6 +5,7 @@ You are tasked with deploying a multi-container application that includes a web 
 #### Instructions
 - **Use nginx:latest image**
 - Create a service type NodePort
+___________________________________________________________________________________________________________________________________________________________________
 ## solution
 This this task is divided into two part
 ## Part 1: Setup Docker Compose
@@ -219,7 +220,13 @@ How would you configure persistent storage for the MySQL database?
 - Create a Persistent Volume (PV) of storage 1Gi & accessModes of ReadWriteOnce
 - Create a Deployment for the MySQL Database with PVC with image mysql:5.7
 
+___________________________________________________________________________________________________________________________________________________________________
 
+# solution
+
+
+
+___________________________________________________________________________________________________________________________________________________________________
 # Question 3
 ## Scenario : Auto-Scaling a Kubernetes Deployment Based on CPU Utilisation
 You have a web application running on Kubernetes and want to ensure that the application scales automatically based on CPU utilisation.
@@ -233,8 +240,11 @@ application?
 - minReplicas = 1
 - maxReplicas = 10
 - targetCPUUtilizationPercentage = 50
+___________________________________________________________________________________________________________________________________________________________________
 
 
+
+___________________________________________________________________________________________________________________________________________________________________
 # Question 4
 ## Scenario : Create a ConfigMap and Use it in a Deployment
 Create a ConfigMap containing a custom HTML page content and update the Nginx deployment to use this ConfigMap to serve the custom page.
