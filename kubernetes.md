@@ -223,6 +223,74 @@ How would you configure persistent storage for the MySQL database?
 ___________________________________________________________________________________________________________________________________________________________________
 
 # solution
+#### To configure persistent storage in Kubernetes for a MySQL database, ensuring that data is not lost even if the pod restarts.
+1. - First you need to create a persistent volume(A Persistent Volume (PV) is a piece of storage in the cluster that has been provisioned by an administrator). The task is to create  a PV with a storage size of 1Gi and an access mode of ReadWriteOnce.
+##### mysql-pv.yaml
+```
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: mysql-pv
+spec:
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: "/mnt/data"   # This path is specific to your Kubernetes node and may vary
+```
+
+2. - Create a Persistent Volume Claim (A Persistent Volume Claim (PVC) is a request for storage by a user). We'll create a PVC that requests storage from the PV we just created.
+     
+##### mysql-pvc.yaml
+```
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mysql-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+```
+3. - Create a Deployment for the MySQL Database
+- Now, create a Deployment for the MySQL database, linking it to the PVC to ensure data persistence as requested by th admin using  mysql:5.7 image.
+##### mysql-deployment.yaml
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mysql-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mysql
+  template:
+    metadata:
+      labels:
+        app: mysql
+    spec:
+      containers:
+        - name: mysql
+          image: mysql:5.7
+          ports:
+            - containerPort: 3306
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "rootpassword"  # You can change this password
+          volumeMounts:
+            - name: mysql-storage
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: mysql-storage
+          persistentVolumeClaim:
+            claimName: mysql-pvc
+```
+
+
 
 
 
