@@ -376,8 +376,16 @@ spec:
 4. Apply the HPA configuration to your Kubernetes cluster.
 
 ```
+kubectl apply -f nginx-hpa.yaml
+```
+5. You can verify that the HPA is working correctly by checking the HPA status:
+```
 kubectl get hpa
 ```
+5. Proof of concept:
+
+![image](https://github.com/user-attachments/assets/d5873695-55fd-4fb7-9b38-040ac1a67975)
+
 
 
 
