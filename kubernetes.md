@@ -318,9 +318,9 @@ ________________________________________________________________________________
 
 - The HorizontalPodAutoscaler works as a Kubernetes API resource and a controller, adjusting the Pod count based on metrics like CPU or memory usage. However, it doesn’t apply to non-scalable objects like DaemonSets.  [Horizontal Pod Autoscaling - Kubernetes Documentation](https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/)
   
-##### To configure Horizontal Pod Autoscaling (HPA) for a Kubernetes deployment based on CPU utilization as requested,
-1. -- create a deployment for the web application
-###### nginx-deployment.yaml
+#### To configure Horizontal Pod Autoscaling (HPA) for a Kubernetes deployment based on CPU utilization as requested,
+1. - create a deployment for the web application
+##### nginx-deployment.yaml
 ```
 # nginx-deployment
 apiVersion: apps/v1
@@ -349,14 +349,14 @@ spec:
             - containerPort: 80
 ```
 
-2. -- Apply the deployment configuration to your Kubernetes cluster.
+2. - Apply the deployment configuration to your Kubernetes cluster.
    
 ```
 kubectl apply -f nginx-deployment.yaml
 ```
 3.  Next create an HPA for the nginx-deployment to automatically scale based on CPU utilization. The HPA will scale the number of pods between 1 and 10 based on a target CPU utilization of 50%.
 
-###### nginx-hpa.yaml
+##### nginx-hpa.yaml
 
 ```
 # nginx-hpa
