@@ -414,7 +414,87 @@ Create a ConfigMap containing a custom HTML page content and update the Nginx de
 - Create the Config map
 - Update the Nginx Deployment
 - USe the image nginx:latest
+___________________________________________________________________________________________________________________________________________________________________
 
+# Solution
+1. First, create a ConfigMap that contains your custom HTML file and save the following YAML to a file called custom-page-configmap.yaml
+
+##### custom-page-configmap.yaml
+```
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: custom-page-configmap
+data:
+  custom-page.html: |
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LW Nginx Page</title>
+    </head>
+    <body>
+    <h1>Hello from LW Nginx Page!</h1>
+    <p>This is a LW custom page served by Nginx using Kubernetes ConfigMap.</p>
+    </body>
+    </html>
+```
+2. Update the Nginx Deployment
+- Assuming you already have an Nginx Deployment, you need to update it to use the ConfigMap. If you don't have a Deployment yet, you can create one. Here’s how you can modify an existing Deployment or create a new one that mounts the ConfigMap:
+
+##### custom-page-nginx-deployment.yaml
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+      - name: nginx
+        image: nginx:latest
+        volumeMounts:
+        - name: custom-page-volume
+          mountPath: /usr/share/nginx/html/custom-page.html
+          subPath: custom-page.html
+      volumes:
+      - name: custom-page-volume
+        configMap:
+          name: custom-page-configmap
+```
+
+##### Apply the deployment
+```
+kubectl apply -f custom-page-nginx-deployment.yaml
+```
+
+3. If you need to expose the Nginx Deployment:
+
+##### nginx-nodeport-service.yaml
+
+```
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-nodeport-service
+spec:
+  type: NodePort
+  ports:
+    - port: 80
+      targetPort: 80
+      nodePort: 30007
+  selector:
+    app: nginx
+```
 
 # Question 5
 ## Scenario : Creating and Using a Service Account for Access Control
