@@ -642,6 +642,9 @@ kubectl logs -l app=busybox
 ```
 This should display **Redhat**, which is the value of the secret.
 
+- Reference: [ServiceAccount Token Secrets](https://kubernetes.io/docs/concepts/configuration/secret/#serviceaccount-token-secrets)
+
+
 
 
 
