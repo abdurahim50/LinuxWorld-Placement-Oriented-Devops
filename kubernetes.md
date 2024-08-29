@@ -428,17 +428,17 @@ metadata:
 data:
   custom-page.html: |
     <!DOCTYPE html>
-    <html lang="en">
-    <head>
+<html lang="en">
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LW Nginx Page</title>
-    </head>
-    <body>
+</head>
+<body>
     <h1>Hello from LW Nginx Page!</h1>
     <p>This is a LW custom page served by Nginx using Kubernetes ConfigMap.</p>
-    </body>
-    </html>
+</body>
+</html>
 ```
 2. Update the Nginx Deployment
 - Assuming you already have an Nginx Deployment, you need to update it to use the ConfigMap. If you don't have a Deployment yet, you can create one. Here’s how you can modify an existing Deployment or create a new one that mounts the ConfigMap:
@@ -491,9 +491,12 @@ spec:
   ports:
     - port: 80
       targetPort: 80
-      nodePort: 30007
   selector:
     app: nginx
+```
+##### Apply the service
+```
+kubectl apply -f nginx-nodeport-service.yaml
 ```
 
 # Question 5
@@ -515,6 +518,134 @@ verbs: ["get", "list"]
 ```
 ["sh", "-c", "cat /etc/secrets/my-key"]
 ```
+___________________________________________________________________________________________________________________________________________________________________
+ # Solution
+
+In Kubernetes, a Service Account is a non-human account that provides a distinct identity within a cluster. It is used by Pods, system components, and other entities to interact with the cluster.
+
+- Purpose: Service Accounts are used for authenticating and applying security policies in Kubernetes.
+- Namespaced: Each Service Account exists within a specific namespace. A default Service Account is created when a namespace is made.
+- Lightweight: They are easy to create and manage, defined directly in the Kubernetes API.
+- Portable: Configurations that use Service Accounts are easily transferable between different environments because of their lightweight and namespaced nature.
+- Service Accounts differ from user accounts, which are human identities. User accounts are not directly managed by the Kubernetes API and can be authenticated through various methods. [Service Accounts in Kubernetes](https://kubernetes.io/docs/concepts/security/service-accounts/)
+
+  1.  Create the Service Account
+  ##### service-account.yaml
+```
+apiVersion: v1
+kind: ServiceAccount
+metadata:
+  name: my-service-account
+```
+
+### Apply the YAMl file
+```
+kubectl apply -f service-account.yaml
+```
+2. Create the Role
+##### role.yaml
+```
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: secret-access-role
+rules:
+- apiGroups: [""]
+  resources: ["secrets"]
+  verbs: ["get", "list"]
+```
+
+### Apply using kubectl
+```
+kubectl apply -f role.yaml
+```
+
+3. Next create a rolebinding
+##### rolebinding.yaml
+```
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: secret-access-rolebinding
+subjects:
+- kind: ServiceAccount
+  name: my-service-account
+  namespace: default
+roleRef:
+  kind: Role
+  name: secret-access-role
+  apiGroup: rbac.authorization.k8s.io
+```
+
+### Apply the rolebinding.yaml file
+```
+kubectl apply -f  rolebinding.yaml
+```
+
+4. Create the Secret
+Run echo -n "Redhat" | base64 to encrypt the key and copy the encypted passcode and paste in your secret.yaml
+
+##### secret.yaml
+```
+apiVersion: v1
+kind: Secret
+metadata:
+  name: my-secret
+type: Opaque
+data:
+  my-key: $(echo -n "Redhat" | base64)
+```
+### Apply the secret.yaml file 
+```
+kubectl apply -f secret.yaml
+```
+
+5. Deploy an Application Using the Service Account
+
+#### deployment.yaml
+```
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: busybox-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: busybox
+  template:
+    metadata:
+      labels:
+        app: busybox
+    spec:
+      serviceAccountName: my-service-account
+      containers:
+      - name: busybox
+        image: busybox
+        command: ["sh", "-c", "cat /etc/secrets/my-key"]
+        volumeMounts:
+        - name: secret-volume
+          mountPath: /etc/secrets
+          readOnly: true
+      volumes:
+      - name: secret-volume
+        secret:
+          secretName: my-secret
+```
+### Apply the deployment.yaml
+```
+kubectl apply -f deployment.yaml
+```
+## Verify the deploy logs by running:
+```
+kubectl logs -l app=busybox
+```
+This should display **Redhat**, which is the value of the secret.
+
+
+
+
+
 
 
 
