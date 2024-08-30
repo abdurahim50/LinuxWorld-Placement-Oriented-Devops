@@ -18,9 +18,27 @@ Assuming you have Jenkins setup.
 - In the job configuration, under "Source Code Management," select "Git."
 - Enter the repository URL: https://github.com/Pramod123789/jenkins-python.git.
 - In the "Branches to build" section, specify */main to track changes on the main branch.
+
+  ![image](https://github.com/user-attachments/assets/51f0a0e2-ca10-4f84-b6ea-72e29b99d727)
+
   
 #### Build Triggers:
 - Check the "GitHub hook trigger for GITScm polling" option to trigger the build when a change is pushed to the repository.
+  
+  ![image](https://github.com/user-attachments/assets/493508fb-7022-4e00-9874-32c4ebc2a099)
+
+To set up a GitHub hook trigger for the "GITScm polling" option in Jenkins, follow these steps:
+- After enable GitHub Webhook in Jenkins, go to github follow these steps set up Webhook:
+
+- Go to your GitHub repository.
+- Click on "Settings" in the top menu.
+- In the left sidebar, click on "Webhooks."
+- Click "Add webhook."
+- In the "Payload URL" field, enter your Jenkins URL followed by /github-webhook/, for example: http://your-jenkins-url/github-webhook/.
+- Set the "Content type" to application/json.
+- In the "Which events would you like to trigger this webhook?" section, select "Just the push event."
+- Click "Add webhook."
+
 #### Build Step:
 - In the "Build" section, click on "Add build step" and select "Execute shell."
 - Enter the following command to run the Python script:
@@ -29,6 +47,12 @@ python3 app.py
 ```
 Save and Build:
 Save the configuration and test the setup by pushing a change to the repository.
+
+#### Proof of concept:
+
+![image](https://github.com/user-attachments/assets/96ee15fd-4073-4a5c-baff-c029afab200d)
+
+
 
 # Task 2
 
