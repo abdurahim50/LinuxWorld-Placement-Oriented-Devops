@@ -6,7 +6,8 @@ should:
 + Clone the following repository from GitHub. https://github.com/Pramod123789/jenkins-python.git
 + Run the Python script named app.py. Script is in the above repo.
 
-_______________________________________________________________________________________________________________________________________________________________________________________________________________________
+_____________________________________________________________________________________________________________________________________________________________________________________________
+
 # Solution
 Assuming you have Jenkins setup.
 ## 1. Create a New Jenkins Job:
@@ -28,3 +29,40 @@ python3 app.py
 ```
 Save and Build:
 Save the configuration and test the setup by pushing a change to the repository.
+
+# Task 2
+
+## Scenario : Email Notification on Build Failure
+- Set up a Jenkins job to send an email notification to the development team if a build fails. Assume the project is a simple Java application, and the build step
+runs mvn compile.
+_____________________________________________________________________________________________________________________________________________________________________________________________
+# Solution
+
+
+
+# Task 3
+## Scenario : Scheduling a Job to Run Periodically
+- Set up a Jenkins job that runs a backup script located on the server every night at midnight.
+_____________________________________________________________________________________________________________________________________________________________________________________________
+
+# Solution
+
+
+
+# Task 4 
+## Scenario : Simple Deployment to a Local Server
+- Create a Jenkins job that deploys a static website (HTML/CSS/JS files) to a local Apache server whenever a change is detected in the repository.
+_____________________________________________________________________________________________________________________________________________________________________________________________
+
+# Solution
+
+
+
+
+# Task 5
+## Scenario : Building a Simple Job with Parameters
+- Set up a Jenkins job that accepts a parameter (e.g., a branch name) and checks out the specified branch from a Git repository. The job should then run a shell script to print the branch name.
+_____________________________________________________________________________________________________________________________________________________________________________________________
+
+# Solution
+
