@@ -63,9 +63,25 @@ ________________________________________________________________________________
 # Solution
 
 ### Email Notification on Build Failure
-Configure Email Notification:
+Configure SMTP Server
+- Go to Manage Jenkins > Configure System.
+- Scroll down to the Extended E-mail Notification section.
+- Configure your SMTP server settings:
+     - SMTP server: Your mail server (smtp.gmail.com for Gmail).
+     - Default user e-mail suffix: e.g., @yourdomain.com.
+     - Click on the dropdown in advance
+     - Click add credentials and add
+     - User Name: Your email address.
+     - Password: Your email password (you may need an App Password if using services like Gmail)
+     - Use SSL: Check this box if your SMTP server requires SSL ( Gmail uses SSL on port 465).
+     - SMTP Port: Enter the appropriate port (465 for SSL, 587 for TLS).
+- Scroll down to E-mail Notification section and follow similar steps
+- Click Test configuration by sending test e-mail to verify your settings.
 
-- First, ensure that Jenkins has an SMTP server configured (Manage Jenkins → Configure System → E-mail Notification)
+![image](https://github.com/user-attachments/assets/f0a71c4c-091c-40b9-a60b-39ea2eb717a6)
+
+![image](https://github.com/user-attachments/assets/18534d58-4566-444e-acd0-b91d5a54d6d9)
+
 
 - Create a new Freestyle job for the Java project.
 ### Source Code Management:
@@ -75,6 +91,12 @@ Configure Email Notification:
 
 - Add a build step and select "Invoke top-level Maven targets."
 - Enter compile as the goal.
+
+### Build settings
+- Depending on the version of jenkins, configure as below:
+  
+![image](https://github.com/user-attachments/assets/6fb7cf99-f374-4ee6-a5af-6ae518596a5b)
+
 #### Post-build Actions:
 
 - Scroll down to "Post-build Actions" and click on "Add post-build action."
@@ -84,6 +106,11 @@ Configure Email Notification:
 - Save and Build:
 
 - Save the job, and on build failure, an email will be sent to the configured recipients.
+
+### Proof of concept:
+
+![image](https://github.com/user-attachments/assets/ef7a81a9-45c7-4cc4-a835-454e8ab603d5)
+
 
 
 
