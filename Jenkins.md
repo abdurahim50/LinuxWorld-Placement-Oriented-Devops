@@ -38,6 +38,29 @@ runs mvn compile.
 _____________________________________________________________________________________________________________________________________________________________________________________________
 # Solution
 
+### Email Notification on Build Failure
+Configure Email Notification:
+
+- First, ensure that Jenkins has an SMTP server configured (Manage Jenkins → Configure System → E-mail Notification)
+
+- Create a new Freestyle job for the Java project.
+### Source Code Management:
+
+- Set up the repository under "Source Code Management" using Git.
+### Build Step:
+
+- Add a build step and select "Invoke top-level Maven targets."
+- Enter compile as the goal.
+#### Post-build Actions:
+
+- Scroll down to "Post-build Actions" and click on "Add post-build action."
+- Select "E-mail Notification" or "Editable Email Notification."
+- Configure the recipient list, e.g., team@example.com.
+- Ensure to set the option to send emails only when the build fails.
+- Save and Build:
+
+- Save the job, and on build failure, an email will be sent to the configured recipients.
+
 
 
 # Task 3
