@@ -117,9 +117,36 @@ Configure SMTP Server
 # Task 3
 ## Scenario : Scheduling a Job to Run Periodically
 - Set up a Jenkins job that runs a backup script located on the server every night at midnight.
-_____________________________________________________________________________________________________________________________________________________________________________________________
+____________________________________________________________________________________________________________________________________________________________________________________________
 
 # Solution
+## Scheduling a Job to Run Periodically
+- Create a New Jenkins Job:
+- Create a new Freestyle job named NightlyBackup.
+  
+## Build Triggers:
+- In the "Build Triggers" section, select "Build periodically."
+- Enter the cron expression for midnight:
+  
+```
+H 0 * * *
+```
+## Build Step:
+
+- Add a build step and select "Execute shell."
+- Enter the command to run the backup script:
+  
+```
+DATE=$(date)
+TIMESTAMP=$(date +"%H-%M-%S")
+
+# Save the backup job status to a file with a timestamped filename
+echo "Backup job ran at $DATE" > /tmp/backup_test_$TIMESTAMP.txt
+```
+- Save the job, and it will run the backup script every night at midnight.
+
+![image](https://github.com/user-attachments/assets/af780f13-21ab-4076-a4b7-422bd5162f79)
+
 
 
 
