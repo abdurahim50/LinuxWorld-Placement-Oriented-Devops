@@ -46,10 +46,19 @@ server2 ansible_host=192.168.1.102 ansible_user=ec2-user ansible_ssh_private_key
         port: "80/tcp"
         permanent: yes
 ```
+
 3. Execute the playbook using the following command:
 ```
 ansible-playbook -i inventory apache_setup.yml
 ```
+## Proof of concept: 
+
+![image](https://github.com/user-attachments/assets/8af06654-7dd5-4443-ac18-e2bfddca3e89)
+
+#### verifying if apache was install in our targets servers running in aws
+![image](https://github.com/user-attachments/assets/0e62d45e-d41b-45d5-96fe-2155a51bcb9c)
+
+
 Reference: [ansible.builtin.package – Generic OS package manager](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/package_module.html)
 
 
