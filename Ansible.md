@@ -63,7 +63,7 @@ A company needs to create a new user named **deploy** on all their servers for d
 ___________________________________________________________________________________________________________________________________________________________________
 
 # Solution
-From the instruction, we are create an ansible playbook to automate the creation of the **deploy user** with a custom home directory and the **deploy group** on all servers.The playbook will handle creating the group if it doesn't exist, setting up the user, and adding the user to the group.
+From the instruction, we are going to create an ansible playbook to automate the creation of the **deploy user** with a custom home directory and the **deploy group** on all servers.The playbook will handle creating the group if it doesn't exist, setting up the user, and adding the user to the group.
 
 1. Create the Playbook and save the content into a file **deploy_user_setup.yml**
 ```
@@ -121,7 +121,54 @@ the files.
 ___________________________________________________________________________________________________________________________________________________________________
 
 # Solution
+We are going create ansible playbook to automate the deployment of the website from a Git repository to a server. The playbook will handle cloning the repository, setting the correct file permissions, and ensuring the web server can serve the files as required.
 
+1. Create the playbook and save the content into a file **deploy_static_website.yml**
+```
+---
+- name: Deploy static website
+  hosts: all
+  become: yes
+
+  vars:
+    repo_url: https://github.com/example/static-website.git
+    web_root: /var/www/html
+
+  tasks:
+    - name: Install Git
+      package:
+        name: git
+        state: present
+
+    - name: Clone the website repository
+      git:
+        repo: "{{ repo_url }}"
+        dest: "{{ web_root }}"
+        version: main
+        force: yes
+
+    - name: Set correct file permissions for web server
+      file:
+        path: "{{ web_root }}"
+        state: directory
+        owner: apache
+        group: apache
+        mode: '0755'
+        recurse: yes
+
+    - name: Ensure Apache is running
+      service:
+        name: httpd
+        state: started
+        enabled: yes
+```
+2. Run the playbook using the following command:
+
+```
+ansible-playbook -i inventory deploy_static_website.yml
+
+# where inventory is the path that list all your targets servers.
+```
 
 
 # TASK 4
