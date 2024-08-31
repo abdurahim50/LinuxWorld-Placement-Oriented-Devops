@@ -183,18 +183,120 @@ ________________________________________________________________________________
 
 # Solution
 
+To secure the web server using firewalld, you can automate the installation and configuration with an Ansible playbook. This playbook will install firewalld, configure it to allow traffic on ports 22 (SSH), 80 (HTTP), and 443 (HTTPS), and block all other ports.
+
+## 1. Create a playbook name **firewall_setup.yml**
+```
+ ---
+- name: Set up basic firewall using firewalld
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Install firewalld
+      package:
+        name: firewalld
+        state: present
+
+    - name: Start and enable firewalld service
+      service:
+        name: firewalld
+        state: started
+        enabled: yes
+
+    - name: Allow SSH (port 22)
+      firewalld:
+        service: ssh
+        state: enabled
+        immediate: yes
+        permanent: yes
+
+    - name: Allow HTTP (port 80)
+      firewalld:
+        service: http
+        state: enabled
+        immediate: yes
+        permanent: yes
+
+    - name: Allow HTTPS (port 443)
+      firewalld:
+        service: https
+        state: enabled
+        immediate: yes
+        permanent: yes
+
+    - name: Block all other traffic
+      firewalld:
+        state: default
+        immediate: yes
+        permanent: yes
+```
+
+## 2. Run the playbook using the following command:
+```
+ansible-playbook -i inventory firewall_setup.yml
+
+# where inventory is the path that list all your targets servers.
+```
+
+Refernece: [ansible.posix.firewalld – Manage firewalld zones and rules](https://docs.ansible.com/ansible/latest/collections/ansible/posix/firewalld_module.html)
+
+
 
 # TASK 5
 
 ## Scenario : Creating and Managing Directories
 A development team needs specific directories set up on all their servers for storing logs and temporary files. Your task is to create these directories with the correct permissions and ownership.
 ### Requirements:
-+ Create the /var/log/app_logs directory with appropriate
-permissions.
++ Create the /var/log/app_logs directory with appropriate permissions.
 + Create the /tmp/app_temp directory with appropriate permissions.
 + Ensure these directories are owned by the appuser user and appgroup group.
 ____________________________________________________________________________________________________________________________________________________________________
 # Solution
+
+In this task, we will use ansible playbook to automate the creation and management of the required directories with the correct permissions and ownership. The playbook will create the directories **/var/log/app_logs** and **/tmp/app_temp**, set the appropriate permissions, and ensure the directories are owned by the appuser user and appgroup group.
+
+1. Create the playbook name **directory_setup.yml**.
+   
+```
+---
+- name: Create and manage directories for the development team
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Ensure appuser and appgroup exist
+      user:
+        name: appuser
+        state: present
+        group: appgroup
+
+    - name: Create /var/log/app_logs directory
+      file:
+        path: /var/log/app_logs
+        state: directory
+        mode: '0755'
+        owner: appuser
+        group: appgroup
+
+    - name: Create /tmp/app_temp directory
+      file:
+        path: /tmp/app_temp
+        state: directory
+        mode: '0755'
+        owner: appuser
+        group: appgroup
+```
+
+3. Run the Playbook: Execute the playbook using the following command:
+
+```
+ansible-playbook -i inventory directory_setup.yml
+
+# where inventory is the path that list all your targets servers.
+```
+
+Reference: [ansible.builtin.file – Manage files and file properties](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html)
 
 
   
