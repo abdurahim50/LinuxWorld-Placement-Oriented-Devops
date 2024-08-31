@@ -90,7 +90,7 @@ From the instruction, we are going to create an ansible playbook to automate the
     - name: Create the deploy user with a custom home directory
       user:
         name: deploy
-        home: /custom/home/deploy
+        home: /company/home/deploy
         shell: /bin/bash
         group: deploy
         create_home: yes
