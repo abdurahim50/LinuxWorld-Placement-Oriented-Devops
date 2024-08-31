@@ -49,6 +49,8 @@ server2 ansible_host=192.168.1.102 ansible_user=ec2-user ansible_ssh_private_key
 ```
 ansible-playbook -i inventory apache_setup.yml
 ```
+Reference: [ansible.builtin.package – Generic OS package manager](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/package_module.html)
+
 
 
   
