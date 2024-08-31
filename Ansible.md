@@ -55,7 +55,7 @@ Reference: [ansible.builtin.package – Generic OS package manager](https://docs
 
 # TASK 2
 ## Scenario : Managing User Accounts
-A company needs to create a new user named deploy on all their servers for deployment purposes. The user should have a specific home directory and should belong to the deploy group.
+A company needs to create a new user named **deploy** on all their servers for deployment purposes. The user should have a specific home directory and should belong to the **deploy** group.
 ### Instructions:
 + Create the deploy user with a custom home directory.
 + Create the deploy group if it does not exist.
@@ -63,6 +63,49 @@ A company needs to create a new user named deploy on all their servers for deplo
 ___________________________________________________________________________________________________________________________________________________________________
 
 # Solution
+From the instruction, we are create an ansible playbook to automate the creation of the **deploy user** with a custom home directory and the **deploy group** on all servers.The playbook will handle creating the group if it doesn't exist, setting up the user, and adding the user to the group.
+
+1. Create the Playbook and save the content into a file **deploy_user_setup.yml**
+```
+---
+- name: Manage deploy user and group
+  hosts: all
+  become: yes
+
+  tasks:
+    - name: Ensure the deploy group exists
+      group:
+        name: deploy
+        state: present
+
+    - name: Create the deploy user with a custom home directory
+      user:
+        name: deploy
+        home: /custom/home/deploy
+        shell: /bin/bash
+        group: deploy
+        create_home: yes
+        state: present
+        comment: "Deployment User"
+
+    - name: Ensure the deploy user is part of the deploy group
+      user:
+        name: deploy
+        groups: deploy
+        append: yes
+```
+
+2. Run the playbook using the following command:
+
+```
+ansible-playbook -i inventory deploy_user_setup.yml
+
+# where inventory is the path that list all your targets servers.
+```
+
+Reference: [ansible.builtin.user – Manage user accounts](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html)
+
+
 
 
 
