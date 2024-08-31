@@ -156,6 +156,46 @@ echo "Backup job ran at $DATE" > /tmp/backup_test_$TIMESTAMP.txt
 _____________________________________________________________________________________________________________________________________________________________________________________________
 
 # Solution
+## 1. Prepare Your Environment
+Install Apache Server: Make sure Apache is installed and running on your local server. You can install it using the following commands:
+```
+sudo apt update
+sudo apt install apache2
+````
+- Start and Enable Apache: Start the Apache service and ensure it starts on boot:
+  
+```
+sudo systemctl start apache2
+sudo systemctl enable apache2
+```
+
+## 2. Create a Jenkins Job
+
+Navigate to your Jenkins dashboard.
+
+- Click on New Item.
+- Enter a name for your job (e.g., "Deploy Static Website").
+- Select Pipeline and click OK.
+- Configure Pipeline:
+    - In the job configuration page, scroll down to the Pipeline section.
+    - Select Pipeline script from SCM
+    - Replace https://github.com/your-username/your-repo.git with the URL of your GitHub repository.
+- Adjust the targetDir variable if your Apache document root is different.
+- Click Save to save your job configuration.
+
+## 3. Set Up Build Triggers
+- Configure SCM Polling
+   - In the job configuration page, go to the Build Triggers section.
+   - Select Poll SCM and set a schedule (e.g., * * * * * to poll every minute).
+- Set Up Webhooks (Optional)
+## 4. Test the Deployment
+- Click Build Now on the job’s page to test the deployment.
+## 5. Verify Deployment
+- Visit your local Apache server’s IP address or domain to check if the static website is deployed correctly.
+  
+
+![image](https://github.com/user-attachments/assets/033c1d43-5f13-4774-b3ee-e0b804b4a0ad)
+
 
 
 
