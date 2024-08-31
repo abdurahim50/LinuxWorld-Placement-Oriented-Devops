@@ -203,7 +203,45 @@ Navigate to your Jenkins dashboard.
 # Task 5
 ## Scenario : Building a Simple Job with Parameters
 - Set up a Jenkins job that accepts a parameter (e.g., a branch name) and checks out the specified branch from a Git repository. The job should then run a shell script to print the branch name.
-_____________________________________________________________________________________________________________________________________________________________________________________________
+____________________________________________________________________________________________________________________________________________________________________________________________
+
 
 # Solution
+
+## Create a New Jenkins Job
+- Open Jenkins Dashboard: Go to your Jenkins instance.
+- Click on "New Item".
+- Enter a Job Name: For example, ParameterizedJob.
+- Select "Freestyle project": Choose the Freestyle project option and click OK.
+## 2. Add Parameters
+- Check "This project is parameterized": In the job configuration page, check the "This project is parameterized" option.
+- Click on "Add Parameter" and select "String Parameter."
+   - Name: Enter BRANCH.
+   - Default Value: Enter main (or any default branch name you prefer).
+     
+![image](https://github.com/user-attachments/assets/8ad81d39-f995-4627-bfd0-27561ab562c9)
+
+## Source Code Management
+- check git and add your git repository. 
+
+
+## 3. Add a Build Step
+- Scroll down to the "Build" section.
+- Click on "Add build step" and select "Execute shell."
+```
+git checkout ${BRANCH}
+echo "Checked out branch: ${BRANCH}"
+```
+## 4. Save and Build
+- Click "Save" at the bottom of the configuration page.
+- Click on "Build Now" from the job's main page. You will be prompted to enter the branch name. The default value will be main, but you can change it as needed.
+- Click "Build" to start the job.
+
+  ![image](https://github.com/user-attachments/assets/b40d00b6-797e-4ce8-99a8-1826039479cc)
+
+## 5. Verify the Job
+Once the job completes, check the build logs to see the output. It should show the branch that was checked out and confirm that the specified branch was used.
+
+![image](https://github.com/user-attachments/assets/5628a62e-1b39-4dca-947a-99be3aa29d39)
+
 
