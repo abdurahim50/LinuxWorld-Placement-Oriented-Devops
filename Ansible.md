@@ -23,11 +23,13 @@ server2 ansible_host=192.168.1.102 ansible_user=ec2-user ansible_ssh_private_key
 - name: Install and configure Apache web server
   hosts: all
   become: yes
+  vars:
+    web_pack: "httpd"
   
   tasks:
     - name: Install Apache
       package:
-        name: httpd
+        name: "{{ web_pack }}"
         state: present
 
     - name: Start Apache service
