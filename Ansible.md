@@ -347,14 +347,15 @@ Reference: [ansible.builtin.file – Manage files and file properties](https://d
 
 
 # TASK 6 From the training video
-## Scenario: Installing and Starting Docker on a Remote Server
-Imagine you need to set up Docker on a group of remote servers in your environment. Docker is essential for containerizing applications, and your task is to automate its installation and configuration.
+## Scenario: Installing Docker and Pulling a Specific Docker Image
+Imagine you need to set up Docker on a group of remote servers in your environment. Docker is crucial for containerizing applications, and your task is to automate its installation, configuration, and the retrieval of specific Docker images.
 
 ### Instructions:
 + Download and configure the Docker repository on all target servers.
 + Install the Docker CE (Community Edition) software.
 + Start the Docker service on the target servers.
 + Ensure that the Docker service is enabled to start on boot.
++ Pull the ubuntu Docker image with a specific tag (14.04) from Docker Hub on the target servers.
 ___________________________________________________________________________________________________________________________________________________________________
 
 # Solution
@@ -375,11 +376,16 @@ We are create an ansible playbook to automate the installation and configuration
         state: present
 
     - name: Start docker service
-      systemd:
+      systemd_service:
         name: "docker"
-        enabled: yes
+        enabled: true
         state: started
-        
+
+    - name: pull docker image named ubuntu
+      docker_image:
+        name: "ubuntu"
+        source: "pull"
+        tag: "14.04"        
 ```
 
 ## 2. Run the playbook using the following command:
@@ -388,6 +394,12 @@ ansible-playbook -i inventory docker_setup.yml
 ```
 ## Proof
 ![image](https://github.com/user-attachments/assets/c390093e-59d6-4ed8-97b2-a934ca86aa15)
+
+## References: 
+[ansible.docker_image – Manage Docker images](https://docs.ansible.com/ansible/2.9/modules/docker_image_module.html)
+[ansible.builtin.get_url – Downloads files from the web](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/get_url_module.html)
+
+
 
 
 
