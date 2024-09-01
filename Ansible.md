@@ -359,7 +359,7 @@ Imagine you need to set up Docker on a group of remote servers in your environme
 ___________________________________________________________________________________________________________________________________________________________________
 
 # Solution
-We are create an ansible playbook to automate the installation and configuration of Docker on remote servers.
+We are going to create an ansible playbook to automate the installation and configuration of Docker on remote servers.
 
 ## 1. Create an ansible playbook name: docker_setup.yml
 ```
