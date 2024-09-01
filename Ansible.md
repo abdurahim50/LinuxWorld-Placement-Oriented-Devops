@@ -346,4 +346,15 @@ ansible-playbook -i inventory directory_setup.yml
 Reference: [ansible.builtin.file – Manage files and file properties](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html)
 
 
+# TASK 6 From the training video
+## Scenario: Installing and Starting Docker on a Remote Server
+Imagine you need to set up Docker on a group of remote servers in your environment. Docker is essential for containerizing applications, and your task is to automate its installation and configuration.
+
+### Instructions:
++ Download and configure the Docker repository on all target servers.
++ Install the Docker CE (Community Edition) software.
++ Start the Docker service on the target servers.
++ Ensure that the Docker service is enabled to start on boot.
+
+
   
