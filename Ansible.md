@@ -365,7 +365,7 @@ We are create an ansible playbook to automate the installation and configuration
 - hosts: awsvm
   tasks:
     - name: Download docker.repo to configure yum for docker
-      ansible.builtin.get_url:
+      get_url:
         url: "https://download.docker.com/linux/rhel/docker-ce.repo"
         dest: "/etc/yum.repos.d/"
 
@@ -375,7 +375,7 @@ We are create an ansible playbook to automate the installation and configuration
         state: present
 
     - name: Start docker service
-      ansible.builtin.systemd:
+      systemd:
         name: "docker"
         enabled: yes
         state: started
