@@ -188,6 +188,18 @@ ansible-playbook -i inventory deploy_static_website.yml
 
 # where inventory is the path that list all your targets servers.
 ```
+## Proof of concept:
+ ![image](https://github.com/user-attachments/assets/86fbb793-124e-4a98-8feb-6aaf890c0e5f)
+
+## Verifying the websit
+![image](https://github.com/user-attachments/assets/fd4cb970-3847-4452-a507-24f43a95cc00)
+
+
+## 🎉 Hooray...!!! Our static website is up. 🚀
+
+![image](https://github.com/user-attachments/assets/fdfd9edb-e252-43af-b84f-6e42569d868c)
+
+
 
 
 # TASK 4
