@@ -217,8 +217,10 @@ ________________________________________________________________________________
 To secure the web server using firewalld, you can automate the installation and configuration with an Ansible playbook. This playbook will install firewalld, configure it to allow traffic on ports 22 (SSH), 80 (HTTP), and 443 (HTTPS), and block all other ports.
 
 ## 1. Create a playbook name **firewall_setup.yml**
+- Set default zone to drop: This task sets the default zone to drop, which blocks all incoming traffic except for the services that you explicitly allow. The drop zone discards all traffic that is not explicitly allowed.
+  
 ```
- ---
+---
 - name: Set up basic firewall using firewalld
   hosts: all
   become: yes
@@ -234,6 +236,12 @@ To secure the web server using firewalld, you can automate the installation and 
         name: firewalld
         state: started
         enabled: yes
+
+    - name: Set default zone to drop
+      firewalld:
+        zone: drop
+        state: enabled
+        permanent: yes
 
     - name: Allow SSH (port 22)
       firewalld:
@@ -256,11 +264,6 @@ To secure the web server using firewalld, you can automate the installation and 
         immediate: yes
         permanent: yes
 
-    - name: Block all other traffic
-      firewalld:
-        state: default
-        immediate: yes
-        permanent: yes
 ```
 
 ## 2. Run the playbook using the following command:
@@ -269,6 +272,11 @@ ansible-playbook -i inventory firewall_setup.yml
 
 # where inventory is the path that list all your targets servers.
 ```
+
+## Proof of concept:
+
+![image](https://github.com/user-attachments/assets/c69d283f-9e0b-469e-b768-afe03152e747)
+
 
 Refernece: [ansible.posix.firewalld – Manage firewalld zones and rules](https://docs.ansible.com/ansible/latest/collections/ansible/posix/firewalld_module.html)
 
