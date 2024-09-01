@@ -355,6 +355,40 @@ Imagine you need to set up Docker on a group of remote servers in your environme
 + Install the Docker CE (Community Edition) software.
 + Start the Docker service on the target servers.
 + Ensure that the Docker service is enabled to start on boot.
+___________________________________________________________________________________________________________________________________________________________________
+
+# Solution
+We are create an ansible playbook to automate the installation and configuration of Docker on remote servers.
+
+## 1. Create an ansible playbook name: docker_setup.yml
+```
+- hosts: awsvm
+  tasks:
+    - name: Download docker.repo to configure yum for docker
+      ansible.builtin.get_url:
+        url: "https://download.docker.com/linux/rhel/docker-ce.repo"
+        dest: "/etc/yum.repos.d/"
+
+    - name: Install docker-ce software
+      package:
+        name: "docker-ce"
+        state: present
+
+    - name: Start docker service
+      ansible.builtin.systemd:
+        name: "docker"
+        enabled: yes
+        state: started
+        
+```
+
+## 2. Run the playbook using the following command:
+```
+ansible-playbook -i inventory docker_setup.yml
+```
+## Proof
+![image](https://github.com/user-attachments/assets/c390093e-59d6-4ed8-97b2-a934ca86aa15)
+
 
 
   
