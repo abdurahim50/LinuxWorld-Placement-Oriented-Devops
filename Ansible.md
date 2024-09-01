@@ -402,7 +402,9 @@ We are going to create an ansible playbook to automate the installation and conf
 ansible-playbook -i inventory docker_setup.yml
 ```
 ## Proof
-![image](https://github.com/user-attachments/assets/c390093e-59d6-4ed8-97b2-a934ca86aa15)
+
+![image](https://github.com/user-attachments/assets/4548b995-5543-4483-908c-a98da3d05cc3)
+
 
 ## References: 
 [ansible.docker_image – Manage Docker images](https://docs.ansible.com/ansible/2.9/modules/docker_image_module.html)
