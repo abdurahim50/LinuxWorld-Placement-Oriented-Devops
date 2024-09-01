@@ -348,7 +348,7 @@ Reference: [ansible.builtin.file – Manage files and file properties](https://d
 
 # TASK 6 From the training video
 ## Scenario: Installing Docker and Pulling a Specific Docker Image
-Imagine you need to set up Docker on a group of remote servers in your environment. Docker is crucial for containerizing applications, and your task is to automate its installation, configuration, and the retrieval of specific Docker images.
+Imagine you need to set up Docker on a group of remote servers in your environment. Docker is essential for containerizing applications, and your task is to automate the installation, configuration, image pulling, and container creation.
 
 ### Instructions:
 + Download and configure the Docker repository on all target servers.
@@ -356,6 +356,7 @@ Imagine you need to set up Docker on a group of remote servers in your environme
 + Start the Docker service on the target servers.
 + Ensure that the Docker service is enabled to start on boot.
 + Pull the ubuntu Docker image with a specific tag (14.04) from Docker Hub on the target servers.
++ Run a Docker container named lw_container in detached mode using the ubuntu:14.04 image.
 ___________________________________________________________________________________________________________________________________________________________________
 
 # Solution
@@ -385,7 +386,15 @@ We are going to create an ansible playbook to automate the installation and conf
       docker_image:
         name: "ubuntu"
         source: "pull"
-        tag: "14.04"        
+        tag: "14.04"
+
+    - name: Run and started container in detach
+      docker_container:
+        name: "lw_container"
+        state: started
+        image: "ubuntu:14.04"
+        detach: yes
+     
 ```
 
 ## 2. Run the playbook using the following command:
