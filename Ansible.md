@@ -136,7 +136,7 @@ Your team needs to deploy a static HTML website to a server. The website files a
 target server.
 + Ensure the correct file permissions are set for the web server to serve
 the files.
-+ Website repository https://github.com/example/static-website.git
++ Website repository https://github.com/abdurahim50/jenkins_training_2024.git
 ___________________________________________________________________________________________________________________________________________________________________
 
 # Solution
