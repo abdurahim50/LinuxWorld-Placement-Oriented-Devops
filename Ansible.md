@@ -112,6 +112,16 @@ ansible-playbook -i inventory deploy_user_setup.yml
 # where inventory is the path that list all your targets servers.
 ```
 
+## Proof of concept: 
+
+![image](https://github.com/user-attachments/assets/58b386a8-a135-426a-8408-d09eedb410d7)
+
+### Verifying if user was created in aws
+
+![image](https://github.com/user-attachments/assets/3cc0976d-5fe8-4feb-ad3f-99c3741fccb0)
+
+
+
 Reference: [ansible.builtin.user – Manage user accounts](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/user_module.html)
 
 
