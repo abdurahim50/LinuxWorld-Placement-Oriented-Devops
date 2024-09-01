@@ -335,6 +335,14 @@ ansible-playbook -i inventory directory_setup.yml
 # where inventory is the path that list all your targets servers.
 ```
 
+## Proof of cocnept:
+![image](https://github.com/user-attachments/assets/b24998dd-fbdc-4072-b6d7-f661e3451847)
+
+## Using ansible command to verify if appuser, appgroup, /var/log/app_logs, /tmp/app_temp is created.
+- Here, we use ansible adhoc command to verify out configurations from the localhost running our controler Machine without necessary logging into the target host.
+![image](https://github.com/user-attachments/assets/877e4bf1-c800-4f24-b371-8fc1e3fbf8bc)
+
+
 Reference: [ansible.builtin.file – Manage files and file properties](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/file_module.html)
 
 
