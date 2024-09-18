@@ -523,7 +523,6 @@ repo_url:  "repo_url: https://github.com/example/static-website.git"
       when: not webinstall.failed
 
     - name: Deploy web page 
-      git:
         repo: "{{ repo_url }}"
         dest: "{{ web_root }}"
         version: main
