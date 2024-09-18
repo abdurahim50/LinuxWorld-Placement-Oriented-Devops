@@ -492,12 +492,12 @@ Next,create a file **nginx_lb.conf.j2**.The Jinja2 template will configure Nginx
 - Create a file **nginx_vars.yml**
 **nginx_vars.yml**
 ```
-nginx_package: nginx  # Package name for Nginx
-nginx_service: nginx  # Nginx service name
-httpd_package: httpd
-httpd_service: httpd
+nginx_package: "nginx"  # Package name for Nginx
+nginx_service: "nginx"  # Nginx service name
+httpd_package: "httpd"
+httpd_service: "httpd"
 web_root: "/var/www/html"
-repo_url:  
+repo_url:  "repo_url: https://github.com/example/static-website.git"
 
 ```
 ## Step 4: Custom page
