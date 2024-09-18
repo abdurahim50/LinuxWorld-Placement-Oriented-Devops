@@ -479,8 +479,8 @@ Next,create a file **nginx_lb.conf.j2**.The Jinja2 template will configure Nginx
     {% endfor %}
 
     server {
-        listen 80;
-
+        listen 8080;
+     #  server_name www.domain.com;
         location / {
             proxy_pass http://backend;
         
