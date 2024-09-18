@@ -413,7 +413,127 @@ ansible-playbook -i inventory docker_setup.yml
 [ansible.builtin.get_url – Downloads files from the web](https://docs.ansible.com/ansible/latest/collections/ansible/builtin/get_url_module.html)
 
 
+# TASK 7
+## Scenario: Automating Nginx Load Balancer Setup
+Your organization has two backend web servers, and you are tasked with setting up Nginx as a reverse proxy and load balancer. The objective is to distribute traffic evenly between the backend servers to improve availability and redundancy. Additionally, the setup should include custom error pages and logging.
 
+### Requirements:
+- Install Nginx on the load balancer server.
+- Configure Nginx to act as a reverse proxy, load balancing traffic between two backend servers.
+- Set up custom error pages to display in case one of the backend servers fails.
+- Ensure the Nginx service is started and enabled to run on boot.
+- Implement logging for access and errors.
+  
+## step
+### Nginx Installation and Reverse Proxy Setup
+In this task, i created an Ansible playbook that installs Nginx on the load balancer server and configures it to act as a reverse proxy, balancing traffic between two backend web servers. The configuration was set up to ensure high availability and proper distribution of traffic.
+**LB_nginx_playbook.yml**
+```
+---
+- name: Install and configure Nginx load balancer
+  hosts: LB
+  become: yes  # Ensure root privileges
 
+  tasks:
+    - name: Install nginx
+      package:
+        name: "{{ nginx_package }}"
+        state: present
+      register: lbinstall
+
+    - name: Confirm nginx installation success
+      debug:
+        msg: "Nginx installed successfully..."
+      when: lbinstall is succeeded
+
+    - name: Deploy nginx load balancer configuration
+      template:
+        src: "nginx_lb.conf.j2"  # Jinja2 template for Nginx config
+        dest: "/etc/nginx/conf.d/nginx_lb.conf"
+        mode: '0644'
+      notify: restart nginx
+
+    - name: Ensure Nginx is started and enabled at boot
+      service:
+        name: "{{ nginx_service }}"
+        state: started
+        enabled: yes
+       when: lbinstall is succeeded
+
+  handlers:
+    - name: restart nginx
+      service:
+        name: "{{ nginx_service }}"
+        state: restarted
+      when: lbinstall is succeeded
+```
+## Step 2: Jinja2 Template for Nginx Load Balancer Configuration
+Next,create a file **nginx_lb.conf.j2**.The Jinja2 template will configure Nginx to balance traffic between the two backend web servers.
+**nginx_lb.conf.j2**
+```
+# Nginx configuration for load balancing
+    upstream backend {
+    {% for i in groups.webserver %}
+        server {{ i }} max_fails=3 fail_timeout=30s;
+    }
+    {% endfor %}
+
+    server {
+        listen 80;
+
+        location / {
+            proxy_pass http://backend;
+        
+        }
+    }
+}
+```
+## Step 3: Variables for Nginx Configuration
+- Create a file **nginx_vars.yml**
+**nginx_vars.yml**
+```
+nginx_package: nginx  # Package name for Nginx
+nginx_service: nginx  # Nginx service name
+httpd_package: httpd
+httpd_service: httpd
+web_root: "/var/www/html"
+repo_url:  
+
+```
+## Step 4: Custom page
+- Set up the custom webpage or from github url with the custom name as index.html.j2
+## Step 5: Ansible Playbook to Deploy Custom page 
+**web_playbook.yml**
+```
+---
+- name: Install and configure Nginx load balancer
+  hosts: LB
+  become: yes  # Ensure root privileges
+
+  tasks:
+    - name: Install nginx
+      package:
+        name: "{{ httpd_package }}"
+        state: present
+      register: webinstall
+
+    - name: Confirm httpd installation success
+      debug:
+        msg: "software installed successfully..."
+      when: not webinstall.failed
+
+    - name: Deploy web page 
+      git:
+        repo: "{{ repo_url }}"
+        dest: "{{ web_root }}"
+        version: main
+        force: yes
+
+    - name: Service start web server
+      service:
+        name: "{{ httpd_service }}"
+        state: started
+       when: not webinstall.failed
+```
 
   
