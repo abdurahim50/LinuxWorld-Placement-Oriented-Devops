@@ -1,4 +1,5 @@
-# Scenario 1:
+# TASK 1
+## Scenario:
 Imagine you need to monitor Docker containers on an AWS EC2 instance in your environment. The company uses Prometheus as their monitoring tool, and your task is to automate the provisioning, installation, and configuration of Docker to expose metrics for Prometheus using Terraform and Ansible.
 
 ## Instructions:
